@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biology Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #fdf8f0;
+  --paper: #faf5ea;
+  --warm-white: #fff9f0;
+  --ink: #1a1209;
+  --ink2: #3d2f1a;
+  --ink3: #6b5740;
+  --ink4: #9c8570;
+  --rule: #e2d5c0;
+  --rule2: #cfc0a8;
+
+  --u1: #c0392b; --u1l: #fdf0ef; --u1m: #e8b4b0;
+  --u2: #1a7a4a; --u2l: #eef7f2; --u2m: #9fd4b8;
+  --u3: #2563a8; --u3l: #eff4fb; --u3m: #a8c4e4;
+  --u4: #b07d12; --u4l: #fdf6e3; --u4m: #e4c878;
+  --u5: #6b3fa0; --u5l: #f5f0fc; --u5m: #c9aee8;
+
+  --sidebar-w: 260px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── TOP BAR ── */
+#topbar {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+#topbar .logo {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: #f5e8c8;
+  flex-shrink:0;
+}
+#topbar .logo span { color: #f0a040; }
+.search-wrap {
+  flex:1; max-width:380px; margin-left:auto;
+  position:relative;
+}
+.search-wrap input {
+  width:100%;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 6px;
+  color: #fff;
+  padding: 6px 14px 6px 36px;
+  font-family: 'DM Sans', sans-serif;
+  font-size:.85rem;
+  outline:none;
+  transition: border-color .2s, background .2s;
+}
+.search-wrap input::placeholder { color: rgba(255,255,255,.45); }
+.search-wrap input:focus { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.4); }
+.search-wrap svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:.5; }
+.progress-dots { display:flex; gap:6px; align-items:center; margin-left:16px; }
+.pdot { width:10px; height:10px; border-radius:50%; background: rgba(255,255,255,.2); cursor:pointer; transition: transform .15s, background .2s; }
+.pdot:hover { transform: scale(1.4); }
+
+/* ── LAYOUT ── */
+#wrap { display:flex; min-height: calc(100vh - 56px); }
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--paper);
+  border-right: 1px solid var(--rule);
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 20px 0 40px;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--rule2); border-radius:2px; }
+
+.sb-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--ink4);
+  padding: 0 20px 8px;
+  margin-top: 16px;
+}
+.sb-unit {
+  padding: 10px 20px 6px;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sb-unit:hover { background: var(--rule); }
+.sb-unit.active { border-left-color: var(--active-color, var(--ink)); background: var(--active-bg, var(--rule)); }
+.sb-unit-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem;
+  color: var(--ink4);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.sb-unit-title {
+  font-size: .84rem;
+  font-weight: 500;
+  color: var(--ink2);
+  line-height:1.35;
+  margin-top: 2px;
+}
+.sb-sub {
+  padding: 5px 20px 5px 28px;
+  font-size: .8rem;
+  color: var(--ink3);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all .12s;
+  line-height:1.3;
+}
+.sb-sub:hover { background: rgba(0,0,0,.04); color: var(--ink2); }
+.sb-sub.active { color: var(--active-color); font-weight: 500; background: var(--active-bg); border-left-color: var(--active-color); }
+
+/* ── MAIN ── */
+#main {
+  flex:1;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ── UNIT HERO ── */
+.unit-hero {
+  padding: 52px 56px 40px;
+  border-bottom: 2px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.unit-hero::before {
+  content: attr(data-num);
+  position:absolute; right:-10px; top:-20px;
+  font-family:'Lora',serif;
+  font-size: 180px;
+  font-weight: 700;
+  color: rgba(0,0,0,.04);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+}
+.unit-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom:14px;
+  border: 1.5px solid;
+}
+.unit-hero h1 {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  margin-bottom: 12px;
+}
+.unit-hero .subtitle {
+  font-size: .95rem;
+  color: var(--ink3);
+  font-style: italic;
+  max-width:600px;
+  font-family: 'Lora', serif;
+}
+
+/* ── LESSON SECTIONS ── */
+.lesson-section {
+  padding: 40px 56px;
+  border-bottom: 1px solid var(--rule);
+}
+.lesson-section:last-child { border-bottom: none; }
+
+.lesson-header {
+  display:flex; align-items:flex-start; gap:16px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.lesson-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .75rem;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 5px;
+  padding: 2px 8px;
+  margin-top: 5px;
+  flex-shrink:0;
+}
+.lesson-title-wrap { flex:1; }
+.lesson-title-wrap h2 {
+  font-family: 'Lora', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height:1.25;
+}
+.lesson-title-wrap p {
+  font-size:.83rem; color: var(--ink3); margin-top:3px; font-style:italic;
+}
+.toggle-icon {
+  font-size:1.2rem; color:var(--ink4); transition: transform .25s;
+  flex-shrink:0; margin-top:4px;
+}
+.lesson-header.open .toggle-icon { transform: rotate(90deg); }
+
+.lesson-body { display:none; }
+.lesson-body.open { display:block; }
+
+/* ── CONTENT BLOCKS ── */
+.content-block { margin-bottom: 28px; }
+
+.content-block h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink2);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--rule);
+  display:flex; align-items:center; gap:8px;
+}
+.content-block h3 .icon { font-size:.9rem; }
+
+.content-block p {
+  color: var(--ink2);
+  margin-bottom: 10px;
+  font-size:.92rem;
+  line-height:1.75;
+}
+
+/* Key terms */
+.key-terms {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 12px 0;
+}
+.term {
+  background: var(--warm-white);
+  border: 1.5px solid var(--rule2);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: .82rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink2);
+  position:relative;
+  cursor:default;
+  transition: border-color .15s, background .15s;
+}
+.term:hover { border-color: var(--rule2); background: var(--rule); }
+.term .def {
+  display:none;
+  position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+  background: var(--ink); color: var(--cream);
+  border-radius:6px; padding:8px 12px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.78rem; line-height:1.5;
+  width:220px; text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  z-index:50;
+  white-space:normal;
+}
+.term:hover .def { display:block; }
+
+/* Info boxes */
+.info-box {
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size:.88rem;
+  border-left: 4px solid;
+}
+.info-box.note { background:#eff6ff; border-left-color:#3b82f6; }
+.info-box.important { background:#fef3c7; border-left-color:#f59e0b; }
+.info-box.example { background:#f0fdf4; border-left-color:#22c55e; }
+.info-box.remember { background:#fdf2f8; border-left-color:#a855f7; }
+.info-box strong { display:block; margin-bottom:4px; font-size:.8rem; text-transform:uppercase; letter-spacing:.07em; opacity:.8; }
+
+/* Comparison table */
+.compare-table {
+  width:100%; border-collapse:collapse;
+  font-size:.84rem; margin: 16px 0;
+  border-radius:8px; overflow:hidden;
+  border: 1px solid var(--rule2);
+}
+.compare-table th {
+  background: var(--ink); color: var(--cream);
+  padding: 10px 14px; text-align:left;
+  font-weight:500; font-size:.8rem;
+  letter-spacing:.04em;
+}
+.compare-table td {
+  padding: 9px 14px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink2); vertical-align:top;
+}
+.compare-table tr:nth-child(even) td { background: var(--paper); }
+
+/* Process steps */
+.steps { counter-reset:step; margin:12px 0; }
+.step {
+  display:flex; gap:14px; margin-bottom:12px;
+  align-items:flex-start;
+}
+.step-num {
+  counter-increment:step;
+  width:26px; height:26px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--ink); color:var(--cream);
+  font-family:'DM Mono',monospace; font-size:.72rem;
+  flex-shrink:0; margin-top:2px;
+}
+.step-text { font-size:.88rem; color:var(--ink2); padding-top:4px; line-height:1.6; }
+.step-text strong { color: var(--ink); }
+
+/* Bullet points */
+.fact-list { list-style:none; margin: 10px 0; }
+.fact-list li {
+  padding: 5px 0 5px 20px;
+  position:relative;
+  font-size:.88rem;
+  color:var(--ink2);
+  line-height:1.6;
+  border-bottom: 1px dotted var(--rule);
+}
+.fact-list li:last-child { border-bottom:none; }
+.fact-list li::before {
+  content:'';
+  position:absolute; left:0; top:12px;
+  width:8px; height:8px;
+  border-radius:50%;
+  background: var(--bullet-color, var(--ink4));
+}
+
+/* Two-col grid */
+.two-col {
+  display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  margin:14px 0;
+}
+.mini-card {
+  background: var(--warm-white);
+  border:1.5px solid var(--rule);
+  border-radius:8px; padding:14px 16px;
+}
+.mini-card h4 {
+  font-family:'Lora',serif; font-size:.88rem;
+  font-weight:700; margin-bottom:6px;
+  color: var(--ink);
+}
+.mini-card p { font-size:.82rem; color:var(--ink2); line-height:1.6; }
+
+/* Divider */
+.rule-divider {
+  border:none; border-top:1px solid var(--rule);
+  margin: 20px 0;
+}
+
+/* Highlight span */
+.hl { font-weight:600; color:var(--ink); }
+.it { font-style:italic; }
+
+/* Quick summary at top of each lesson */
+.lesson-summary {
+  background: var(--warm-white);
+  border: 1px solid var(--rule2);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size:.88rem;
+  color: var(--ink2);
+  line-height:1.65;
+  font-family:'Lora',serif;
+  font-style:italic;
+}
+
+@media(max-width:768px){
+  #sidebar { display:none; }
+  .unit-hero { padding: 32px 20px 28px; }
+  .lesson-section { padding: 28px 20px; }
+  .two-col { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="logo">🧬 Bio<span>Review</span></div>
+  <div class="search-wrap">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search-input" placeholder="Search topics, terms…" oninput="doSearch(this.value)">
+  </div>
+  <div class="progress-dots" id="pdots"></div>
+</div>
+
+<div id="wrap">
+  <div id="sidebar"><div id="sb-inner"></div></div>
+  <div id="main" id="content-main"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONTENT DATA
+// ═══════════════════════════════════════════════════════════════
+const UNITS = [
+  // ────────────────────────────────────────────────
+  { id:'u1', num:'I', color:'#c0392b', light:'#fdf0ef', mid:'#e8b4b0',
+    title:"Life's Support &amp; Protective Systems",
+    subtitle:"How organisms maintain shape, protect their internal environment, and move through the world.",
+    lessons:[
+      {
+        id:'l1-1', num:'1.1',
+        title:"The Need for Extra Protection and Support",
+        brief:"All living organisms face physical threats from their environment and must maintain structural integrity. Evolution has produced a remarkable diversity of protective solutions.",
+        sections:[
+          { heading:"Why Protection Matters", icon:"🛡️", content:`
+            <p>Every organism exists in an environment that can damage it — through physical impact, desiccation, pathogens, UV radiation, or predation. Without protection, delicate internal processes would be exposed and disrupted. Protective structures form the first line of defense between the organism's internal environment (<span class="hl">homeostasis</span>) and the often hostile outside world.</p>
+            <div class="info-box note"><strong>Key Concept</strong>Protection and support are inseparable functions — a structure that provides mechanical support also often provides protection, and vice versa.</div>
+          `, terms:[
+            {t:"Homeostasis",d:"The ability of an organism to maintain a stable internal environment despite external changes."},
+            {t:"Integument",d:"The outer covering of an organism (skin, shell, cuticle, bark)."},
+            {t:"Exoskeleton",d:"An external skeleton that provides support and protection, found in arthropods."},
+            {t:"Endoskeleton",d:"An internal skeleton found in vertebrates, providing support from within."},
+          ]},
+          { heading:"Types of Skeletal Systems", icon:"🦴", content:`
+            <table class="compare-table">
+              <tr><th>Skeleton Type</th><th>Found In</th><th>Material</th><th>Key Feature</th></tr>
+              <tr><td>Hydrostatic skeleton</td><td>Earthworms, jellyfish, sea anemones</td><td>Fluid under pressure in body cavities</td><td>Flexible; shape maintained by muscular pressure against fluid</td></tr>
+              <tr><td>Exoskeleton</td><td>Insects, crustaceans, arachnids</td><td>Chitin (arthropods); calcium carbonate (mollusks)</td><td>Rigid external covering; must be molted for growth</td></tr>
+              <tr><td>Endoskeleton</td><td>Vertebrates; also sponges (spicules), echinoderms</td><td>Bone (calcium phosphate); cartilage</td><td>Internal framework; grows with the organism</td></tr>
+            </table>
+          `, terms:[]},
+          { heading:"Protective Integuments Across Life", icon:"🌿", content:`
+            <ul class="fact-list" style="--bullet-color:#c0392b">
+              <li><strong>Plants:</strong> Cell walls of cellulose; waxy cuticle on leaves; bark (dead cork cells) on woody stems protect against desiccation and damage.</li>
+              <li><strong>Invertebrates:</strong> Chitin exoskeleton in arthropods; mucous coatings in soft-bodied worms and slugs; calcium carbonate shells in mollusks and echinoderms.</li>
+              <li><strong>Fish &amp; Reptiles:</strong> Overlapping scales — bony (fish) or keratinous (reptiles) — reduce water loss and resist abrasion.</li>
+              <li><strong>Birds:</strong> Feathers insulate, waterproof, and provide camouflage; the unique protein <em>beta-keratin</em> gives feathers and scales their strength.</li>
+              <li><strong>Mammals:</strong> Hair/fur for insulation; skin with keratin for waterproofing; various specialized modifications (quills, horns, nails, claws).</li>
+            </ul>
+            <div class="info-box example"><strong>Example</strong>The shell of a sea turtle is formed from fused vertebrae and ribs covered by scutes (keratin plates) — both endoskeletal and exoskeletal elements working together.</div>
+          `, terms:[
+            {t:"Chitin",d:"A tough polysaccharide forming the exoskeleton of arthropods and the cell walls of fungi."},
+            {t:"Keratin",d:"A fibrous structural protein forming skin, hair, nails, feathers, horns, and claws."},
+            {t:"Cuticle",d:"A waxy protective layer secreted by epidermal cells; found on plant leaves and insect exoskeletons."},
+          ]},
+        ]
+      },
+      {
+        id:'l1-2', num:'1.2',
+        title:"Providing Bodily Shape and Support for Internal Organs",
+        brief:"The skeleton and connective tissues give the body its form and protect vital organs by holding them in place.",
+        sections:[
+          { heading:"The Human Skeletal System", icon:"🦷", content:`
+            <p>The adult human skeleton has <span class="hl">206 bones</span>, divided into two main divisions:</p>
+            <div class="two-col">
+              <div class="mini-card"><h4>Axial Skeleton (80 bones)</h4><p>Forms the central axis: skull, vertebral column (33 vertebrae), sternum, and 12 pairs of ribs. Protects the brain, spinal cord, and thoracic organs.</p></div>
+              <div class="mini-card"><h4>Appendicular Skeleton (126 bones)</h4><p>Includes shoulder girdle, pelvic girdle, and limb bones. Enables movement and supports body weight.</p></div>
+            </div>
+            <div class="info-box important"><strong>Remember</strong>Bones are living tissue — they contain osteoblasts (bone-forming cells) and osteoclasts (bone-resorbing cells), constantly remodeling in response to stress and mineral needs.</div>
+          `, terms:[
+            {t:"Osteoblast",d:"Bone-forming cell that secretes the organic matrix of bone (osteoid) and then mineralizes it."},
+            {t:"Osteoclast",d:"Large cell that resorbs (breaks down) bone tissue during growth, repair, and calcium homeostasis."},
+            {t:"Compact bone",d:"Dense outer layer of bone providing strength and resistance to mechanical stress."},
+            {t:"Spongy bone",d:"Porous inner bone with a trabecular lattice; contains red bone marrow for blood cell production."},
+            {t:"Periosteum",d:"Tough fibrous membrane covering bone surfaces; contains blood vessels and osteoblasts."},
+          ]},
+          { heading:"Bone Composition and Function", icon:"🔬", content:`
+            <ul class="fact-list" style="--bullet-color:#c0392b">
+              <li><strong>Structural support:</strong> Supports body weight; maintains posture.</li>
+              <li><strong>Protection:</strong> Skull protects the brain; ribs and sternum form the thoracic cage protecting the heart and lungs; vertebrae protect the spinal cord.</li>
+              <li><strong>Mineral storage:</strong> ~99% of the body's calcium and 85% of phosphorus are stored in bone.</li>
+              <li><strong>Hematopoiesis:</strong> Red bone marrow produces red blood cells, white blood cells, and platelets.</li>
+              <li><strong>Fat storage:</strong> Yellow bone marrow stores adipose tissue as an energy reserve.</li>
+            </ul>
+          `, terms:[{t:"Hematopoiesis",d:"The production of blood cells and platelets, occurring in red bone marrow."}]},
+          { heading:"Connective Tissues: Cartilage and Ligaments", icon:"🔗", content:`
+            <p><span class="hl">Cartilage</span> is a flexible, avascular connective tissue. Three types exist: hyaline (smooth joint surfaces), fibrocartilage (intervertebral discs — shock absorption), and elastic (ear, epiglottis — flexibility). Because it lacks blood vessels, cartilage heals very slowly when damaged.</p>
+            <p><span class="hl">Ligaments</span> connect bone to bone at joints, limiting excessive movement. <span class="hl">Tendons</span> connect muscle to bone, transmitting contractile force to produce movement.</p>
+            <div class="info-box note"><strong>Clinical Link</strong>Osteoporosis results when bone resorption exceeds formation, reducing bone density and increasing fracture risk — most common in post-menopausal women due to declining estrogen levels.</div>
+          `, terms:[
+            {t:"Cartilage",d:"Avascular connective tissue that cushions joints and forms structural elements; made of chondrocytes in a collagen/proteoglycan matrix."},
+            {t:"Ligament",d:"Dense connective tissue band connecting bone to bone; stabilizes joints."},
+            {t:"Tendon",d:"Dense connective tissue cord connecting muscle to bone; transmits muscular force."},
+          ]},
+        ]
+      },
+      {
+        id:'l1-3', num:'1.3',
+        title:"The Need to Move for Various Life Activities",
+        brief:"Movement underlies feeding, reproduction, escape from predators, and internal physiological processes. Different organisms have evolved radically different locomotor systems.",
+        sections:[
+          { heading:"Muscle Types and Contraction", icon:"💪", content:`
+            <table class="compare-table">
+              <tr><th>Type</th><th>Location</th><th>Control</th><th>Appearance</th></tr>
+              <tr><td>Skeletal</td><td>Attached to bones</td><td>Voluntary</td><td>Striated</td></tr>
+              <tr><td>Smooth</td><td>Walls of hollow organs (gut, blood vessels)</td><td>Involuntary</td><td>Non-striated</td></tr>
+              <tr><td>Cardiac</td><td>Heart only</td><td>Involuntary</td><td>Striated + intercalated discs</td></tr>
+            </table>
+            <div class="info-box example"><strong>Sliding Filament Theory</strong>Muscle contraction occurs when <strong>actin</strong> (thin filaments) and <strong>myosin</strong> (thick filaments) slide past each other. Calcium ions bind troponin → tropomyosin shifts → myosin heads bind actin and perform power strokes. Each contraction cycle requires ATP.</div>
+          `, terms:[
+            {t:"Sarcomere",d:"The basic contractile unit of skeletal muscle, bounded by Z-discs; contains overlapping actin and myosin filaments."},
+            {t:"Myosin",d:"Motor protein that forms thick filaments and walks along actin to produce muscle contraction."},
+            {t:"Actin",d:"Protein that forms thin filaments in muscle; myosin binds to actin during contraction."},
+            {t:"ATP",d:"Adenosine triphosphate — the direct energy currency powering the myosin power stroke."},
+          ]},
+          { heading:"Locomotion Diversity", icon:"🏃", content:`
+            <ul class="fact-list" style="--bullet-color:#c0392b">
+              <li><strong>Swimming (fish):</strong> Lateral undulation of the body; paired fins for steering and stability; streamlined body reduces drag.</li>
+              <li><strong>Flying (birds/insects):</strong> Lift generated by wing shape (airfoil); bird wings are modified forelimbs with hollow bones; insect wings are thoracic outgrowths.</li>
+              <li><strong>Walking/running (tetrapods):</strong> Limbs act as levers; bipedalism in humans aided by S-curved spine, arched foot, angled femur, and broadened pelvis.</li>
+              <li><strong>Amoeboid movement:</strong> Pseudopodia (cytoplasmic extensions) — used by amoebas and white blood cells.</li>
+              <li><strong>Ciliary/flagellar:</strong> 9+2 microtubule axoneme powered by dynein motors; cilia move mucus and fluids; flagella propel single cells.</li>
+              <li><strong>Peristalsis:</strong> Wave-like smooth muscle contraction moves food through the gut without requiring locomotion of the organism.</li>
+            </ul>
+          `, terms:[
+            {t:"Antagonistic muscles",d:"Muscle pairs that work in opposition: one contracts (agonist) while the other relaxes (antagonist) to produce and control joint movement."},
+            {t:"Pseudopodia",d:"Temporary cytoplasmic extensions used by amoebas for movement and engulfing particles."},
+            {t:"Peristalsis",d:"Rhythmic smooth muscle contractions that propel food through the digestive tract."},
+          ]},
+          { heading:"Joints and Range of Motion", icon:"🔄", content:`
+            <p>Joints are classified by range of movement:</p>
+            <ul class="fact-list" style="--bullet-color:#c0392b">
+              <li><strong>Ball-and-socket</strong> (hip, shoulder) — movement in all directions; greatest range.</li>
+              <li><strong>Hinge</strong> (knee, elbow) — flexion and extension in one plane only.</li>
+              <li><strong>Pivot</strong> (atlas-axis joint in neck) — rotation only.</li>
+              <li><strong>Gliding/plane</strong> (wrist carpals) — limited sliding movements.</li>
+              <li><strong>Saddle</strong> (thumb) — movement in two planes.</li>
+            </ul>
+            <p>Synovial joints contain <span class="hl">synovial fluid</span> for lubrication, articular cartilage for cushioning, and are enclosed in a fibrous joint capsule reinforced by ligaments.</p>
+          `, terms:[
+            {t:"Synovial fluid",d:"Viscous lubricating fluid secreted by the synovial membrane in freely movable joints."},
+            {t:"Articular cartilage",d:"Hyaline cartilage covering bone surfaces at joints, reducing friction and absorbing shock."},
+          ]},
+        ]
+      },
+    ]
+  },
+  // ────────────────────────────────────────────────
+  { id:'u2', num:'II', color:'#1a7a4a', light:'#eef7f2', mid:'#9fd4b8',
+    title:"Perpetuation of Life",
+    subtitle:"From spores to seeds to embryos — how living organisms ensure the continuation of their kind across generations.",
+    lessons:[
+      {
+        id:'l2-1', num:'2.1',
+        title:"Plant Reproduction",
+        brief:"Plants have evolved an extraordinary range of reproductive strategies, from simple spore dispersal to the complex structures of flowers and fruits.",
+        sections:[
+          { heading:"Alternation of Generations", icon:"🌿", content:`
+            <p>All plants exhibit <span class="hl">alternation of generations</span> — a life cycle alternating between a <span class="hl">diploid sporophyte</span> (2n) that produces spores by meiosis, and a <span class="hl">haploid gametophyte</span> (n) that produces gametes by mitosis.</p>
+            <div class="info-box note"><strong>Key Trend</strong>As plants evolved from bryophytes → ferns → gymnosperms → angiosperms, the gametophyte became progressively smaller and more dependent on the sporophyte. In angiosperms, the gametophyte is reduced to just a few cells (pollen grain and embryo sac).</div>
+            <table class="compare-table">
+              <tr><th>Group</th><th>Dominant Stage</th><th>Vascular Tissue</th><th>Seeds?</th><th>Fruit?</th></tr>
+              <tr><td>Bryophytes (mosses)</td><td>Gametophyte</td><td>No</td><td>No</td><td>No</td></tr>
+              <tr><td>Pteridophytes (ferns)</td><td>Sporophyte</td><td>Yes</td><td>No</td><td>No</td></tr>
+              <tr><td>Gymnosperms (conifers)</td><td>Sporophyte</td><td>Yes</td><td>Yes (naked)</td><td>No</td></tr>
+              <tr><td>Angiosperms (flowering)</td><td>Sporophyte</td><td>Yes</td><td>Yes (enclosed)</td><td>Yes</td></tr>
+            </table>
+          `, terms:[
+            {t:"Sporophyte",d:"The diploid (2n) multicellular plant generation that produces haploid spores by meiosis."},
+            {t:"Gametophyte",d:"The haploid (n) plant generation that produces gametes (eggs and sperm) by mitosis."},
+            {t:"Spore",d:"A haploid reproductive cell produced by meiosis; germinates without fertilization into the gametophyte."},
+          ]},
+          { heading:"Flower Structure and Pollination", icon:"🌸", content:`
+            <p>The flower is the reproductive organ of angiosperms, containing both male (<span class="hl">stamen</span>) and female (<span class="hl">pistil/carpel</span>) parts, or sometimes separated into unisexual flowers.</p>
+            <ul class="fact-list" style="--bullet-color:#1a7a4a">
+              <li><strong>Stamen</strong> = anther (produces pollen) + filament (stalk).</li>
+              <li><strong>Pistil</strong> = stigma (receives pollen) + style (channel for pollen tube) + ovary (contains ovules).</li>
+              <li><strong>Sepals:</strong> Outer protective leaf-like structures.</li>
+              <li><strong>Petals:</strong> Often colorful to attract pollinators.</li>
+            </ul>
+            <p><span class="hl">Pollination</span> is transfer of pollen from anther to stigma. Agents include: insects (most common), wind (anemophily — small petals, feathery stigmas, abundant pollen), water, birds, and bats.</p>
+          `, terms:[
+            {t:"Pollination",d:"Transfer of pollen from the anther to the stigma of a flower, preceding fertilization."},
+            {t:"Pollen grain",d:"The male gametophyte of seed plants; contains the sperm cells released for fertilization."},
+            {t:"Self-incompatibility",d:"Genetic mechanism preventing self-fertilization to promote outcrossing and genetic diversity."},
+          ]},
+          { heading:"Double Fertilization and Seed Development", icon:"🌱", content:`
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Pollen lands on stigma</strong> → pollen tube germinates and grows down through the style toward the ovule.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Pollen tube reaches ovule</strong> → releases two sperm cells.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>First sperm + egg</strong> → diploid (2n) zygote → develops into the embryo.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Second sperm + two polar nuclei</strong> → triploid (3n) primary endosperm nucleus → develops into nutrient-rich endosperm.</div></div>
+              <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Ovule matures</strong> into a seed (embryo + endosperm + seed coat). <strong>Ovary wall</strong> develops into the fruit.</div></div>
+            </div>
+          `, terms:[
+            {t:"Double fertilization",d:"Unique to angiosperms: one sperm fertilizes the egg (→embryo), the other fuses with polar nuclei (→endosperm)."},
+            {t:"Endosperm",d:"Triploid nutritive tissue in angiosperm seeds that nourishes the developing embryo."},
+            {t:"Seed coat",d:"Protective outer covering of the seed, derived from the integuments of the ovule."},
+          ]},
+          { heading:"Seed Dispersal and Vegetative Reproduction", icon:"🌬️", content:`
+            <p>Seed dispersal spreads offspring away from the parent, reducing competition. Methods include: wind (maple samaras, dandelion pappus), water (coconut), animal ingestion (fleshy fruits — endozoochory), external attachment (burs — epizoochory), and explosive dehiscence (touch-me-not).</p>
+            <p><span class="hl">Vegetative (asexual) reproduction</span> produces genetically identical offspring without seeds: stolons/runners (strawberries), rhizomes (ginger), bulbs (onions), corms (crocus), tubers (potatoes), grafting (orchards), cuttings, and tissue culture.</p>
+          `, terms:[
+            {t:"Germination",d:"The resumption of active growth from a dormant seed, triggered by water, oxygen, and adequate temperature."},
+            {t:"Vegetative reproduction",d:"Asexual reproduction in plants producing genetically identical offspring from roots, stems, or leaves."},
+          ]},
+        ]
+      },
+      {
+        id:'l2-2', num:'2.2',
+        title:"Animal Reproduction",
+        brief:"Animals employ diverse reproductive strategies shaped by evolutionary pressures of their ecological niches — from budding hydra to egg-laying birds to placental mammals.",
+        sections:[
+          { heading:"Asexual vs. Sexual Reproduction", icon:"⚖️", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>Asexual Reproduction</h4><p>Produces genetically identical offspring (clones). Rapid, no mate needed. Methods: budding (Hydra, yeast), binary fission (bacteria), fragmentation + regeneration (sea stars, planarians), parthenogenesis (bees, some lizards).</p></div>
+              <div class="mini-card"><h4>Sexual Reproduction</h4><p>Involves meiosis and fusion of gametes, producing genetically diverse offspring. Slower but produces variation for natural selection. The dominant strategy in most animal species.</p></div>
+            </div>
+          `, terms:[
+            {t:"Parthenogenesis",d:"Development of an unfertilized egg into a new individual; occurs in bees, wasps, some lizards, and komodo dragons."},
+            {t:"Budding",d:"Asexual reproduction where a new organism grows as an outgrowth of the parent."},
+          ]},
+          { heading:"Fertilization Strategies", icon:"🐟", content:`
+            <table class="compare-table">
+              <tr><th>Type</th><th>Where</th><th>Typical Animals</th><th>Advantage</th></tr>
+              <tr><td>External fertilization</td><td>Outside the body, in water</td><td>Most fish, amphibians, marine invertebrates</td><td>No mate contact needed; simple</td></tr>
+              <tr><td>Internal fertilization</td><td>Inside the female body</td><td>Reptiles, birds, mammals, insects</td><td>Protects gametes; enables terrestrial life</td></tr>
+            </table>
+            <div class="info-box note"><strong>Note</strong>External fertilization requires water to prevent gamete desiccation and usually involves releasing thousands to millions of eggs to compensate for low fertilization efficiency.</div>
+          `, terms:[]},
+          { heading:"Egg Laying vs. Live Birth", icon:"🥚", content:`
+            <ul class="fact-list" style="--bullet-color:#1a7a4a">
+              <li><strong>Oviparous:</strong> Lay eggs that hatch outside the mother's body. Most fish, amphibians, reptiles, all birds, monotremes (platypus, echidna).</li>
+              <li><strong>Ovoviviparous:</strong> Eggs develop and hatch inside the mother's body with yolk nutrition (no placenta). Some sharks, garter snakes, some fish.</li>
+              <li><strong>Viviparous:</strong> Embryo develops inside uterus nourished by placenta. Most mammals.</li>
+            </ul>
+          `, terms:[
+            {t:"Amniotic egg",d:"Egg with a shell and fluid-filled amnion; evolutionary innovation allowing reproduction on land in reptiles, birds, and monotremes."},
+            {t:"Metamorphosis",d:"A dramatic change in body form during development. Complete (holometabolous): egg→larva→pupa→adult. Incomplete (hemimetabolous): egg→nymph→adult."},
+          ]},
+          { heading:"Reproductive Strategies: r vs. K", icon:"📊", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>r-strategists</h4><p>Produce many small offspring with little parental care; high mortality rate; colonize unstable environments. Examples: insects, most fish, annual plants, bacteria.</p></div>
+              <div class="mini-card"><h4>K-strategists</h4><p>Produce few large offspring with extensive parental care; long lifespan; stable environments near carrying capacity. Examples: elephants, humans, whales, albatrosses.</p></div>
+            </div>
+          `, terms:[]},
+        ]
+      },
+      {
+        id:'l2-3', num:'2.3',
+        title:"Human Reproduction",
+        brief:"Human reproduction involves complex hormonal regulation, precise anatomical structures, and a 9-month gestation period with remarkable developmental stages.",
+        sections:[
+          { heading:"The Menstrual Cycle", icon:"🔄", content:`
+            <p>The ~28-day cycle prepares the female reproductive system for potential pregnancy:</p>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Menstrual phase (Days 1–5):</strong> Shedding of the endometrium; progesterone and estrogen are low.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Follicular phase (Days 1–13):</strong> FSH stimulates follicle growth; rising estrogen thickens endometrium and triggers LH surge.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Ovulation (Day ~14):</strong> LH surge causes release of the mature oocyte from the ovarian follicle.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Luteal phase (Days 15–28):</strong> Ruptured follicle becomes corpus luteum; secretes progesterone to maintain endometrium.</div></div>
+            </div>
+          `, terms:[
+            {t:"FSH",d:"Follicle-stimulating hormone from anterior pituitary; stimulates follicle growth and estrogen production."},
+            {t:"LH",d:"Luteinizing hormone; surge at mid-cycle triggers ovulation; maintains corpus luteum."},
+            {t:"Corpus luteum",d:"Post-ovulation structure formed from the ruptured follicle; secretes progesterone to maintain pregnancy."},
+          ]},
+          { heading:"Fertilization and Implantation", icon:"🧫", content:`
+            <ul class="fact-list" style="--bullet-color:#1a7a4a">
+              <li>Fertilization typically occurs in the <strong>ampulla of the fallopian tube</strong> within 12–24 hours of ovulation.</li>
+              <li>Sperm capacitation activates sperm; the <strong>acrosome reaction</strong> releases enzymes to penetrate the zona pellucida.</li>
+              <li>Sperm entry triggers the <strong>cortical reaction</strong> (zona reaction) — hardening of the zona pellucida to prevent polyspermy.</li>
+              <li>The zygote undergoes cleavage (rapid mitosis without growth) → morula → blastocyst.</li>
+              <li>The blastocyst implants in the endometrium ~6–10 days after fertilization.</li>
+              <li><strong>hCG</strong> is secreted by trophoblast cells, maintaining the corpus luteum and forming the basis of pregnancy tests.</li>
+            </ul>
+          `, terms:[
+            {t:"Zygote",d:"The diploid cell formed by the fusion of egg and sperm; the first cell of a new individual."},
+            {t:"Blastocyst",d:"Early embryo (~100 cells) with a fluid-filled cavity (blastocoel); implants in the endometrium."},
+            {t:"hCG",d:"Human chorionic gonadotropin — embryo-secreted hormone that maintains the corpus luteum in early pregnancy; detected by pregnancy tests."},
+          ]},
+          { heading:"Embryonic and Fetal Development", icon:"👶", content:`
+            <table class="compare-table">
+              <tr><th>Stage</th><th>Timeframe</th><th>Key Events</th></tr>
+              <tr><td>Embryo</td><td>Fertilization → 8 weeks</td><td>Gastrulation (3 germ layers formed), organogenesis, all major organ systems established</td></tr>
+              <tr><td>Fetus</td><td>Week 9 → birth (~40 weeks)</td><td>Growth, maturation of organs; movements felt (quickening) ~18–20 weeks</td></tr>
+            </table>
+            <div class="info-box important"><strong>Germ Layers</strong>Ectoderm → skin, nervous system. Mesoderm → muscles, bones, heart, kidneys, gonads. Endoderm → digestive and respiratory tract linings.</div>
+            <p>The <span class="hl">placenta</span> exchanges oxygen, nutrients, hormones, and antibodies (but not blood) between mother and fetus via the umbilical cord (2 arteries + 1 vein).</p>
+          `, terms:[
+            {t:"Gastrulation",d:"Embryonic process forming the three primary germ layers: ectoderm, mesoderm, and endoderm."},
+            {t:"Placenta",d:"Organ formed from both maternal and fetal tissues for exchange of gases, nutrients, and wastes."},
+            {t:"Amnion",d:"Fluid-filled membrane surrounding and cushioning the embryo/fetus."},
+          ]},
+        ]
+      },
+    ]
+  },
+  // ────────────────────────────────────────────────
+  { id:'u3', num:'III', color:'#2563a8', light:'#eff4fb', mid:'#a8c4e4',
+    title:"My Genes Control My Traits",
+    subtitle:"From Mendel's peas to CRISPR — understanding how genetic information is inherited, expressed, and manipulated.",
+    lessons:[
+      {
+        id:'l3-1', num:'3.1',
+        title:"Genetics: A 21st-Century Science",
+        brief:"Modern genetics has moved far beyond classical Mendelian inheritance to encompass genome sequencing, gene editing, and personalized medicine.",
+        sections:[
+          { heading:"Milestones in Genetics", icon:"📅", content:`
+            <ul class="fact-list" style="--bullet-color:#2563a8">
+              <li><strong>1866 — Mendel:</strong> Laws of inheritance from pea plant experiments; not recognized until rediscovered in 1900.</li>
+              <li><strong>1953 — Watson, Crick, Franklin, Wilkins:</strong> Double helix structure of DNA.</li>
+              <li><strong>1977 — Sanger:</strong> DNA sequencing method.</li>
+              <li><strong>1983 — Mullis:</strong> Polymerase Chain Reaction (PCR) — amplifying DNA.</li>
+              <li><strong>2003 — Human Genome Project:</strong> Complete sequence of the ~3.2 billion base pair human genome (~20,000–25,000 genes).</li>
+              <li><strong>2012 — Doudna &amp; Charpentier:</strong> CRISPR-Cas9 as a precise gene-editing tool.</li>
+            </ul>
+          `, terms:[
+            {t:"PCR",d:"Polymerase Chain Reaction — a technique to amplify specific DNA sequences through repeated cycles of denaturation, annealing, and extension."},
+            {t:"CRISPR-Cas9",d:"Gene-editing tool using guide RNA to direct the Cas9 nuclease to cut specific DNA sequences for precise editing."},
+            {t:"HGP",d:"Human Genome Project — international effort completed in 2003 that sequenced the entire human genome."},
+          ]},
+          { heading:"Central Dogma and Gene Expression", icon:"🔬", content:`
+            <div class="info-box example"><strong>Central Dogma (Crick, 1958)</strong><br>DNA → (transcription) → mRNA → (translation) → Protein<br>Reverse transcription (RNA → DNA) occurs in retroviruses (e.g., HIV).</div>
+            <p><span class="hl">Transcription</span> occurs in the nucleus: RNA polymerase reads the template DNA strand and synthesizes complementary mRNA. <span class="hl">Translation</span> occurs at ribosomes in the cytoplasm: tRNA anticodons bring amino acids matching mRNA codons to build proteins.</p>
+          `, terms:[
+            {t:"Transcription",d:"Synthesis of mRNA from a DNA template by RNA polymerase, occurring in the nucleus."},
+            {t:"Translation",d:"Synthesis of protein from mRNA at ribosomes; each codon specifies an amino acid via tRNA."},
+            {t:"Epigenetics",d:"Heritable changes in gene expression not involving DNA sequence changes — includes DNA methylation and histone modification."},
+          ]},
+          { heading:"Applications of Modern Genetics", icon:"🧬", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>Medical Applications</h4><p>Gene therapy, pharmacogenomics (drug responses based on genetics), prenatal genetic testing, genetic disease diagnosis, stem cell therapy, recombinant insulin and vaccine production.</p></div>
+              <div class="mini-card"><h4>Forensic &amp; Agricultural</h4><p>DNA fingerprinting (STR analysis) for criminal identification and paternity testing. Transgenic crops (Bt corn, herbicide-resistant soybeans). GMO animals for research and medicine.</p></div>
+            </div>
+          `, terms:[
+            {t:"DNA fingerprinting",d:"Using unique patterns of repetitive DNA sequences (STRs) to identify individuals; used in forensics and paternity testing."},
+            {t:"Pharmacogenomics",d:"Study of how genetic variation affects individual responses to drugs."},
+            {t:"Transgenic organism",d:"An organism with a gene from a different species stably incorporated into its genome."},
+          ]},
+        ]
+      },
+      {
+        id:'l3-2', num:'3.2',
+        title:"Inheritance of Traits",
+        brief:"Mendel's laws describe the fundamental patterns by which traits are transmitted from parents to offspring through gametes.",
+        sections:[
+          { heading:"Mendel's Laws", icon:"🫘", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>Law of Segregation</h4><p>Each individual has two alleles for each gene. During gamete formation, the allele pair separates so each gamete receives only one allele. Alleles reunite at fertilization.</p></div>
+              <div class="mini-card"><h4>Law of Independent Assortment</h4><p>Alleles of genes on different chromosomes (or far apart on the same chromosome) segregate independently of each other during meiosis.</p></div>
+            </div>
+            <div class="info-box note"><strong>Limitation</strong>Independent assortment applies only to unlinked genes. Genes on the same chromosome (linked genes) tend to be inherited together unless separated by recombination (crossing over).</div>
+          `, terms:[
+            {t:"Allele",d:"One of two or more alternative forms of a gene occupying the same locus on homologous chromosomes."},
+            {t:"Dominant allele",d:"Allele whose trait is expressed when present in one or two copies (masks the recessive allele)."},
+            {t:"Recessive allele",d:"Allele whose trait is expressed only when present in two copies (homozygous recessive)."},
+          ]},
+          { heading:"Monohybrid and Dihybrid Crosses", icon:"🧮", content:`
+            <table class="compare-table">
+              <tr><th>Cross Type</th><th>Parents</th><th>Genotypic Ratio</th><th>Phenotypic Ratio</th></tr>
+              <tr><td>Monohybrid</td><td>Aa × Aa</td><td>1 AA : 2 Aa : 1 aa</td><td>3 dominant : 1 recessive</td></tr>
+              <tr><td>Test cross</td><td>A? × aa</td><td>Reveals unknown genotype</td><td>1:1 (if Aa) or all dominant (if AA)</td></tr>
+              <tr><td>Dihybrid</td><td>AaBb × AaBb</td><td>9 combinations</td><td>9:3:3:1</td></tr>
+            </table>
+          `, terms:[
+            {t:"Test cross",d:"Cross of an individual showing the dominant phenotype with a homozygous recessive to determine the dominant individual's genotype."},
+            {t:"Punnett square",d:"A grid used to predict the genotypic and phenotypic ratios of offspring from a genetic cross."},
+          ]},
+          { heading:"Beyond Simple Dominance", icon:"🎨", content:`
+            <ul class="fact-list" style="--bullet-color:#2563a8">
+              <li><strong>Incomplete dominance:</strong> Heterozygote has an intermediate phenotype (e.g., red × white → pink snapdragons).</li>
+              <li><strong>Codominance:</strong> Both alleles fully expressed in heterozygote (e.g., AB blood type — both A and B antigens present).</li>
+              <li><strong>Multiple alleles:</strong> More than two alleles exist in the population (e.g., ABO blood type: I^A, I^B, i).</li>
+              <li><strong>Epistasis:</strong> One gene masks the expression of another gene at a different locus.</li>
+              <li><strong>Pleiotropy:</strong> One gene affects multiple phenotypic traits (e.g., sickle-cell allele affects multiple organ systems).</li>
+              <li><strong>Polygenic inheritance:</strong> Multiple genes each contribute to a single quantitative trait (e.g., height, skin color, IQ).</li>
+              <li><strong>Sex-linked traits:</strong> Carried on X chromosome; males (XY) are hemizygous — show X-linked recessive traits with only one copy (e.g., colorblindness, hemophilia).</li>
+            </ul>
+          `, terms:[
+            {t:"Codominance",d:"Both alleles are fully expressed in the heterozygote, producing a phenotype showing both traits."},
+            {t:"Epistasis",d:"Gene interaction where one gene (epistatic) masks or modifies expression of another gene at a different locus."},
+            {t:"Pleiotropy",d:"A single gene producing multiple distinct phenotypic effects."},
+            {t:"Polygenic",d:"Multiple genes each contributing additively to a single quantitative phenotypic trait."},
+          ]},
+        ]
+      },
+      {
+        id:'l3-3', num:'3.3',
+        title:"Genotypes Control Phenotypes",
+        brief:"The relationship between genotype and phenotype is complex — genes set potential, but environment and gene interactions determine the actual expressed trait.",
+        sections:[
+          { heading:"Genotype → Phenotype", icon:"🔁", content:`
+            <p>The <span class="hl">genotype</span> is an organism's complete genetic makeup. The <span class="hl">phenotype</span> is the observable expression of those genes. The relationship is not one-to-one:</p>
+            <div class="info-box important"><strong>Norm of Reaction</strong>The genotype sets a range of possible phenotypes (the norm of reaction). The specific environment determines where within that range the phenotype falls. Identical twins (same genotype) can differ in phenotype due to different environments.</div>
+          `, terms:[
+            {t:"Genotype",d:"The complete genetic makeup of an organism — the combination of alleles at one or more loci."},
+            {t:"Phenotype",d:"The observable physical, physiological, or behavioral expression of an organism's genes and environment."},
+            {t:"Norm of reaction",d:"The range of phenotypes that can be produced by a given genotype across a range of environmental conditions."},
+          ]},
+          { heading:"Chromosomal Disorders", icon:"🧬", content:`
+            <table class="compare-table">
+              <tr><th>Condition</th><th>Karyotype</th><th>Features</th></tr>
+              <tr><td>Down syndrome</td><td>Trisomy 21 (47 chromosomes)</td><td>Intellectual disability, distinctive facial features, heart defects</td></tr>
+              <tr><td>Turner syndrome</td><td>45,X (monosomy X)</td><td>Female; short stature, gonadal dysgenesis, infertility</td></tr>
+              <tr><td>Klinefelter syndrome</td><td>47,XXY</td><td>Male; tall, small testes, infertility, mild cognitive differences</td></tr>
+              <tr><td>Triple X</td><td>47,XXX</td><td>Female; usually mild or no symptoms</td></tr>
+            </table>
+            <p><span class="hl">Nondisjunction</span> — failure of chromosomes to separate during meiosis — is the primary cause of chromosomal aneuploidy. Risk increases with maternal age.</p>
+          `, terms:[
+            {t:"Nondisjunction",d:"Failure of homologous chromosomes or sister chromatids to separate properly during meiosis, producing gametes with abnormal chromosome numbers."},
+            {t:"Aneuploidy",d:"Having an abnormal number of chromosomes (more or fewer than the normal diploid number)."},
+            {t:"Trisomy",d:"Having three copies of a particular chromosome instead of the normal two (2n+1)."},
+          ]},
+          { heading:"Human Genetic Disorders", icon:"🏥", content:`
+            <table class="compare-table">
+              <tr><th>Disorder</th><th>Inheritance</th><th>Cause / Effect</th></tr>
+              <tr><td>Cystic fibrosis</td><td>Autosomal recessive</td><td>Defective CFTR chloride channel → thick mucus in lungs, pancreas</td></tr>
+              <tr><td>Huntington's disease</td><td>Autosomal dominant</td><td>CAG repeat expansion in HTT gene → neurodegeneration in midlife</td></tr>
+              <tr><td>Phenylketonuria (PKU)</td><td>Autosomal recessive</td><td>Deficient phenylalanine hydroxylase → phenylalanine accumulation → intellectual disability</td></tr>
+              <tr><td>Hemophilia A</td><td>X-linked recessive</td><td>Deficient clotting factor VIII → uncontrolled bleeding</td></tr>
+              <tr><td>Colorblindness</td><td>X-linked recessive</td><td>Defective cone photopigments → inability to distinguish certain colors</td></tr>
+            </table>
+          `, terms:[
+            {t:"Carrier",d:"A heterozygous individual who carries a recessive allele but does not show the associated phenotype; can pass the allele to offspring."},
+            {t:"Pedigree",d:"A diagram tracing the inheritance of a trait through multiple generations of a family using standardized symbols."},
+          ]},
+        ]
+      },
+    ]
+  },
+  // ────────────────────────────────────────────────
+  { id:'u4', num:'IV', color:'#b07d12', light:'#fdf6e3', mid:'#e4c878',
+    title:"Life Always Finds a Way",
+    subtitle:"The history of life on Earth, the mechanisms driving evolution, and the patterns and pace of change across billions of years.",
+    lessons:[
+      {
+        id:'l4-1', num:'4.1',
+        title:"History of Life on Earth",
+        brief:"Life has existed on Earth for at least 3.5 billion years, passing through dramatic transformations from the first prokaryotes to the diversity of complex life today.",
+        sections:[
+          { heading:"Timeline of Life", icon:"⏳", content:`
+            <table class="compare-table">
+              <tr><th>Time (approx.)</th><th>Event</th></tr>
+              <tr><td>4.6 billion years ago</td><td>Earth forms</td></tr>
+              <tr><td>4.0 billion years ago</td><td>Oceans form; early chemical evolution</td></tr>
+              <tr><td>3.8–3.5 billion years ago</td><td>Earliest prokaryotic life (stromatolite fossils)</td></tr>
+              <tr><td>2.7–2.4 billion years ago</td><td>Great Oxidation Event: cyanobacteria oxygenate the atmosphere</td></tr>
+              <tr><td>~1.8 billion years ago</td><td>First eukaryotes (endosymbiosis — mitochondria acquired)</td></tr>
+              <tr><td>~600 million years ago</td><td>First multicellular animals; Ediacaran fauna</td></tr>
+              <tr><td>541 million years ago</td><td>Cambrian Explosion — most animal phyla appear</td></tr>
+              <tr><td>475 million years ago</td><td>Plants colonize land</td></tr>
+              <tr><td>375 million years ago</td><td>First tetrapods (fish-to-land transition; Tiktaalik)</td></tr>
+              <tr><td>252 million years ago</td><td>Permian mass extinction — ~96% of species lost</td></tr>
+              <tr><td>66 million years ago</td><td>K-Pg mass extinction — dinosaurs extinct; mammals diversify</td></tr>
+              <tr><td>~300,000 years ago</td><td>Homo sapiens appears</td></tr>
+            </table>
+          `, terms:[
+            {t:"Stromatolites",d:"Layered structures formed by cyanobacterial mats; fossil stromatolites ~3.5 billion years old are among the earliest evidence of life."},
+            {t:"Great Oxidation Event",d:"~2.4 billion years ago, oxygen produced by cyanobacteria accumulated in Earth's atmosphere, transforming its chemistry."},
+            {t:"Cambrian Explosion",d:"Rapid (~20 million year) diversification of animal body plans ~541 million years ago."},
+          ]},
+          { heading:"Origin of Eukaryotes: Endosymbiosis", icon:"🔵", content:`
+            <p>Lynn Margulis's <span class="hl">endosymbiotic theory</span> proposes that mitochondria evolved from engulfed alpha-proteobacteria, and chloroplasts from engulfed cyanobacteria. Evidence: both organelles have double membranes, their own circular DNA, 70S ribosomes, and divide by binary fission.</p>
+          `, terms:[
+            {t:"Endosymbiosis",d:"Theory that eukaryotic organelles (mitochondria, chloroplasts) evolved from free-living prokaryotes engulfed by an ancestral cell."},
+            {t:"Radiometric dating",d:"Method of determining absolute age of rocks and fossils using known decay rates of radioactive isotopes."},
+          ]},
+        ]
+      },
+      {
+        id:'l4-2', num:'4.2',
+        title:"Evolution as a Unifying Theme",
+        brief:"Evolution is the central unifying concept of all biology — it explains the diversity of life, the similarity among organisms, and how organisms are adapted to their environments.",
+        sections:[
+          { heading:"What is Evolution?", icon:"🌀", content:`
+            <p>Biological evolution is defined as <span class="hl">change in allele frequencies in a population over time (generations)</span>. It is a population-level process — individuals do not evolve; populations do. Darwin defined evolution as "descent with modification."</p>
+            <div class="info-box note"><strong>Why Evolution Unifies Biology</strong>It explains the fossil record, molecular similarities, anatomical homologies, biogeographic distributions, drug resistance, and the origins of disease. Nothing in biology makes complete sense except in the light of evolution (Dobzhansky, 1973).</div>
+          `, terms:[
+            {t:"Evolution",d:"Change in allele frequencies in a population across generations; descent with modification."},
+            {t:"Natural selection",d:"The process by which individuals with heritable traits better suited to the environment survive and reproduce more successfully."},
+            {t:"Adaptation",d:"A heritable trait that increases an organism's fitness in its environment."},
+            {t:"Fitness",d:"Relative reproductive success — the number of fertile offspring contributed to the next generation compared to others."},
+          ]},
+          { heading:"Darwin's Four Postulates", icon:"🌿", content:`
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Variation:</strong> Individuals in a population differ from one another in heritable traits.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Heritability:</strong> Variation is passed from parents to offspring.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Overproduction:</strong> More offspring are produced than can survive (struggle for existence).</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Differential survival:</strong> Individuals with favorable traits survive and reproduce at higher rates — "survival of the fittest."</div></div>
+            </div>
+          `, terms:[]},
+        ]
+      },
+      {
+        id:'l4-3', num:'4.3',
+        title:"Changes in Evolutionary Thought Over Time",
+        brief:"From Lamarck's discredited ideas to Darwin's revolution to the Modern Synthesis and beyond — evolutionary theory has itself evolved.",
+        sections:[
+          { heading:"From Lamarck to Darwin to the Modern Synthesis", icon:"📚", content:`
+            <table class="compare-table">
+              <tr><th>Thinker / Theory</th><th>Key Idea</th><th>Status</th></tr>
+              <tr><td>Lamarck (1809)</td><td>Inheritance of acquired characteristics; use and disuse</td><td>Disproven — acquired somatic changes are not passed to offspring</td></tr>
+              <tr><td>Darwin &amp; Wallace (1858–59)</td><td>Natural selection as the mechanism of evolution</td><td>Correct; foundational</td></tr>
+              <tr><td>Mendel (1866, rediscovered 1900)</td><td>Particulate inheritance via discrete alleles</td><td>Correct; explains heritable variation</td></tr>
+              <tr><td>Modern Synthesis (1930s–40s)</td><td>Integration of Darwinian selection + Mendelian genetics + population genetics</td><td>The current foundational framework</td></tr>
+              <tr><td>Extended Evolutionary Synthesis</td><td>Adds epigenetics, niche construction, developmental plasticity, horizontal gene transfer</td><td>Active area of research</td></tr>
+            </table>
+          `, terms:[
+            {t:"Modern Synthesis",d:"The fusion of Darwinian evolution with Mendelian genetics and population genetics (Hardy-Weinberg), completed in the 1940s."},
+            {t:"Hardy-Weinberg equilibrium",d:"A model stating that allele frequencies in a large, randomly mating population remain constant in the absence of evolution."},
+          ]},
+        ]
+      },
+      {
+        id:'l4-4', num:'4.4',
+        title:"The Evidence for Evolution",
+        brief:"Converging lines of evidence from fossils, anatomy, embryology, biogeography, and molecular biology provide overwhelming support for evolution.",
+        sections:[
+          { heading:"Lines of Evidence", icon:"🔍", content:`
+            <ul class="fact-list" style="--bullet-color:#b07d12">
+              <li><strong>Fossil record:</strong> Documents progression from simpler to more complex organisms; transitional fossils (Archaeopteryx, Tiktaalik, whale evolution) show gradual change.</li>
+              <li><strong>Comparative anatomy:</strong> Homologous structures (same ancestry, different functions — e.g., vertebrate forelimbs) vs. analogous structures (different ancestry, similar functions — convergent evolution).</li>
+              <li><strong>Vestigial structures:</strong> Reduced, non-functional remnants of ancestrally useful structures (human coccyx, appendix; whale pelvis; cave fish eyes).</li>
+              <li><strong>Comparative embryology:</strong> Vertebrate embryos share striking similarities in early development (pharyngeal arches, post-anal tail), reflecting conserved developmental genes (Hox genes).</li>
+              <li><strong>Biogeography:</strong> Related species cluster in the same geographic region; island biogeography shows speciation in isolation.</li>
+              <li><strong>Molecular biology:</strong> All life shares the genetic code; more closely related organisms have more similar DNA, RNA, and protein sequences; molecular clocks estimate divergence times.</li>
+            </ul>
+            <div class="info-box example"><strong>Tiktaalik (375 mya)</strong>A lobe-finned fish with a neck, ribs, and wrist-like bones — the iconic "fishapod" transitional fossil documenting the water-to-land vertebrate transition.</div>
+          `, terms:[
+            {t:"Homologous structures",d:"Structures in different species with the same ancestral origin but potentially different functions — evidence of common ancestry."},
+            {t:"Analogous structures",d:"Structures in different species that are functionally similar but have different evolutionary origins (convergent evolution)."},
+            {t:"Vestigial structure",d:"A reduced or non-functional structure inherited from an ancestor where it had a different, functional role."},
+            {t:"Molecular clock",d:"The roughly constant rate of molecular evolution used to estimate when two lineages diverged."},
+          ]},
+        ]
+      },
+      {
+        id:'l4-5', num:'4.5',
+        title:"Patterns of Natural Selection",
+        brief:"Natural selection does not always push populations in the same direction — it can stabilize, shift, or diversify phenotypic distributions.",
+        sections:[
+          { heading:"Three Modes of Selection", icon:"📈", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>🎯 Stabilizing Selection</h4><p>Favors intermediate phenotypes; eliminates extremes. Reduces variation. <em>Example:</em> Human birth weight — very small and very large babies have higher mortality.</p></div>
+              <div class="mini-card"><h4>➡️ Directional Selection</h4><p>Favors one extreme phenotype; shifts population mean over time. <em>Example:</em> Antibiotic resistance; Darwin's finch beak size during drought.</p></div>
+            </div>
+            <div class="mini-card" style="margin-top:12px"><h4>⬅️➡️ Disruptive (Diversifying) Selection</h4><p>Favors both extreme phenotypes; selects against intermediate. Can lead to speciation. <em>Example:</em> Black-bellied seedcracker finches with small and large beaks (different diets), but not intermediates.</p></div>
+            <div class="info-box note" style="margin-top:14px"><strong>Sexual Selection</strong>A special form of natural selection — traits that increase mating success are favored even if they reduce survival (e.g., peacock tail). Includes <em>intersexual selection</em> (mate choice) and <em>intrasexual selection</em> (competition for mates).</div>
+          `, terms:[
+            {t:"Stabilizing selection",d:"Natural selection favoring intermediate phenotypes and reducing variation."},
+            {t:"Directional selection",d:"Natural selection shifting the population toward one extreme of the phenotypic distribution."},
+            {t:"Disruptive selection",d:"Natural selection favoring both extremes over the intermediate phenotype, increasing variation."},
+            {t:"Sexual selection",d:"Selection based on traits that increase mating success, even at some survival cost."},
+          ]},
+        ]
+      },
+      {
+        id:'l4-6', num:'4.6',
+        title:"How Evolution Works",
+        brief:"Natural selection is just one of several mechanisms that drive evolutionary change. Population genetics reveals how allele frequencies shift over generations.",
+        sections:[
+          { heading:"Mechanisms of Evolution", icon:"⚙️", content:`
+            <table class="compare-table">
+              <tr><th>Mechanism</th><th>Description</th><th>Directionality</th></tr>
+              <tr><td>Natural selection</td><td>Differential survival/reproduction based on heritable traits</td><td>Directed — favors adaptive traits</td></tr>
+              <tr><td>Mutation</td><td>Random changes in DNA sequence; ultimate source of all variation</td><td>Random</td></tr>
+              <tr><td>Genetic drift</td><td>Random change in allele frequencies due to chance; greatest effect in small populations</td><td>Random</td></tr>
+              <tr><td>Gene flow</td><td>Movement of alleles between populations via migration; homogenizes allele frequencies</td><td>Depends on direction of migration</td></tr>
+              <tr><td>Non-random mating</td><td>Mate choice (sexual selection) or inbreeding alters genotype frequencies</td><td>Directed (mate choice) or random (inbreeding)</td></tr>
+            </table>
+            <div class="info-box important"><strong>Genetic Drift Effects</strong><em>Bottleneck effect:</em> Population sharply reduced by catastrophe → random sample of alleles survives → reduced diversity. <em>Founder effect:</em> Small group colonizes new area → limited genetic variation from original population.</div>
+          `, terms:[
+            {t:"Genetic drift",d:"Random changes in allele frequencies in small populations due to chance events, not natural selection."},
+            {t:"Gene flow",d:"Movement of alleles into or out of a population due to migration; tends to homogenize allele frequencies between populations."},
+            {t:"Bottleneck effect",d:"Genetic drift following a dramatic reduction in population size; survivors may not represent original allele frequencies."},
+            {t:"Founder effect",d:"Genetic drift when a small subset colonizes a new area; new population has reduced genetic diversity."},
+          ]},
+        ]
+      },
+      {
+        id:'l4-7', num:'4.7',
+        title:"Pace of Evolution",
+        brief:"Evolution can be gradual and continuous or occur in rapid bursts following periods of relative stability — the debate between gradualism and punctuated equilibrium.",
+        sections:[
+          { heading:"Gradualism vs. Punctuated Equilibrium", icon:"⏱️", content:`
+            <div class="two-col">
+              <div class="mini-card"><h4>Phyletic Gradualism</h4><p>Evolutionary change is slow, steady, and continuous through accumulated small changes over geological time. The original Darwinian view. Predicts many intermediate transitional fossils.</p></div>
+              <div class="mini-card"><h4>Punctuated Equilibrium</h4><p>Gould &amp; Eldredge (1972): Species show long periods of stasis (little change), with rapid evolutionary changes concentrated in brief speciation events. Explains the "gaps" in the fossil record.</p></div>
+            </div>
+            <div class="info-box note"><strong>Current Understanding</strong>Both patterns occur in nature. Most evolutionary biologists accept that evolution can be both gradual and punctuated depending on the species, environment, and time scale considered.</div>
+          `, terms:[
+            {t:"Allopatric speciation",d:"Speciation driven by geographic isolation — populations separated by a barrier evolve independently until reproductively isolated."},
+            {t:"Sympatric speciation",d:"Speciation occurring within the same geographic area without physical isolation, often via polyploidy (plants), habitat specialization, or sexual selection."},
+            {t:"Reproductive isolation",d:"The inability of two populations to interbreed due to behavioral, temporal, geographic, or genetic barriers — the key criterion for separate species."},
+          ]},
+        ]
+      },
+    ]
+  },
+  // ────────────────────────────────────────────────
+  { id:'u5', num:'V', color:'#6b3fa0', light:'#f5f0fc', mid:'#c9aee8',
+    title:"Making Sense of Our Biological World",
+    subtitle:"How scientists name, classify, and trace the evolutionary history of Earth's remarkable diversity of life — from microbes to megaflora to megafauna.",
+    lessons:[
+      {
+        id:'l5-1', num:'5.1',
+        title:"Historical View of Life's Classification System",
+        brief:"Classification of organisms has evolved from Aristotle's simple plant-animal division to Linnaeus's systematic hierarchy to Woese's revolutionary three-domain system.",
+        sections:[
+          { heading:"History of Classification", icon:"📖", content:`
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Aristotle (~350 BCE):</strong> Divided organisms into plants and animals; animals grouped by habitat (air, land, water) — the first systematic classification.</div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Linnaeus (1735–1758):</strong> Developed the hierarchical classification system and binomial nomenclature still in use today.</div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Whittaker (1969):</strong> Five-kingdom system: Monera, Protista, Fungi, Plantae, Animalia — first to separate fungi from plants.</div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Woese &amp; Fox (1977–1990):</strong> Based on 16S rRNA sequencing, proposed three domains: Bacteria, Archaea, Eukarya — revolutionary recognition that Archaea are not bacteria.</div></div>
+            </div>
+          `, terms:[
+            {t:"Three-domain system",d:"Carl Woese's classification based on rRNA sequences dividing life into Bacteria, Archaea, and Eukarya."},
+            {t:"Five-kingdom system",d:"Whittaker's 1969 system: Monera, Protista, Fungi, Plantae, Animalia."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-2', num:'5.2',
+        title:"The Binomial Naming of Organisms",
+        brief:"Linnaeus's two-part Latin naming system gives every species a unique, internationally recognized scientific name.",
+        sections:[
+          { heading:"Rules of Binomial Nomenclature", icon:"✍️", content:`
+            <ul class="fact-list" style="--bullet-color:#6b3fa0">
+              <li>Two parts: <strong>Genus name</strong> (capitalized) + <strong>specific epithet</strong> (lowercase).</li>
+              <li>Written in <em>italics</em> (or underlined in handwriting).</li>
+              <li>Latin or Latinized Greek words are used.</li>
+              <li>The genus may be abbreviated after first use: <em>Homo sapiens</em> → <em>H. sapiens</em>.</li>
+              <li>Names are governed internationally by codes: ICZN (animals), ICN (plants, fungi).</li>
+            </ul>
+            <div class="info-box example"><strong>Why Latin?</strong>Latin was the universal scholarly language when Linnaeus was working, and it is a "dead language" — it doesn't change over time — ensuring the names remain stable regardless of regional languages.</div>
+            <div class="info-box note"><strong>Advantage over common names</strong>One species = one scientific name worldwide, eliminating the confusion of multiple common names (e.g., "mountain lion," "puma," "cougar," "panther" all refer to <em>Puma concolor</em>).</div>
+          `, terms:[
+            {t:"Binomial nomenclature",d:"The system of giving each species a two-part Latin name: genus (capitalized) + specific epithet (lowercase)."},
+            {t:"Genus",d:"The taxonomic level above species; groups closely related species sharing common characteristics."},
+            {t:"Specific epithet",d:"The second part of a binomial name, identifying the species within its genus."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-3', num:'5.3',
+        title:"The Hierarchy of Taxonomic Classification",
+        brief:"Linnaean taxonomy arranges life into nested levels from the broadest (Domain) to the most specific (Species), each level more inclusive than the one below it.",
+        sections:[
+          { heading:"The Eight Levels", icon:"📐", content:`
+            <table class="compare-table">
+              <tr><th>Level</th><th>Human Example</th><th>House Cat Example</th></tr>
+              <tr><td>Domain</td><td>Eukarya</td><td>Eukarya</td></tr>
+              <tr><td>Kingdom</td><td>Animalia</td><td>Animalia</td></tr>
+              <tr><td>Phylum</td><td>Chordata</td><td>Chordata</td></tr>
+              <tr><td>Class</td><td>Mammalia</td><td>Mammalia</td></tr>
+              <tr><td>Order</td><td>Primates</td><td>Carnivora</td></tr>
+              <tr><td>Family</td><td>Hominidae</td><td>Felidae</td></tr>
+              <tr><td>Genus</td><td><em>Homo</em></td><td><em>Felis</em></td></tr>
+              <tr><td>Species</td><td><em>Homo sapiens</em></td><td><em>Felis catus</em></td></tr>
+            </table>
+            <div class="info-box note"><strong>Mnemonic</strong>"Dear King Philip Came Over For Good Soup" = Domain, Kingdom, Phylum, Class, Order, Family, Genus, Species.</div>
+          `, terms:[
+            {t:"Biological species concept",d:"Ernst Mayr's definition: a species is a group that can interbreed and produce fertile offspring, reproductively isolated from other groups."},
+            {t:"Taxonomy",d:"The scientific discipline of naming, describing, and classifying organisms."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-4', num:'5.4',
+        title:"Systematics: Tracing Life's History",
+        brief:"Systematics uses shared characters to reconstruct the evolutionary relationships among species, building the tree of life.",
+        sections:[
+          { heading:"Cladistics and Phylogenetic Trees", icon:"🌳", content:`
+            <p><span class="hl">Cladistics</span> classifies organisms based on <span class="hl">shared derived characters (synapomorphies)</span> — traits that evolved in a common ancestor and were inherited by all its descendants. The result is a <span class="hl">cladogram</span> — a branching tree showing evolutionary relationships.</p>
+            <ul class="fact-list" style="--bullet-color:#6b3fa0">
+              <li><strong>Monophyletic group (clade):</strong> Ancestor + ALL descendants — the valid unit of cladistics.</li>
+              <li><strong>Paraphyletic group:</strong> Ancestor + SOME descendants (excludes some — e.g., "Reptilia" excluding birds).</li>
+              <li><strong>Polyphyletic group:</strong> Organisms with no common ancestor included (e.g., "warm-blooded animals" — birds + mammals).</li>
+              <li><strong>Outgroup:</strong> A taxon outside the group of interest, used to root the tree and identify which characters are ancestral vs. derived.</li>
+            </ul>
+          `, terms:[
+            {t:"Synapomorphy",d:"A shared derived character used in cladistics to define a clade — a character that evolved in the common ancestor and is shared by all descendants."},
+            {t:"Clade",d:"A monophyletic group consisting of an ancestor and all of its descendants — a complete branch of the tree of life."},
+            {t:"Parsimony",d:"The principle that the best phylogenetic tree is the one requiring the fewest evolutionary changes."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-5', num:'5.5',
+        title:"Molecular Phylogeny: A Powerful Way to Classify Organisms",
+        brief:"Comparing DNA and protein sequences across species provides a powerful, quantitative method to reconstruct evolutionary history.",
+        sections:[
+          { heading:"Molecular Methods", icon:"💻", content:`
+            <ul class="fact-list" style="--bullet-color:#6b3fa0">
+              <li><strong>16S rRNA:</strong> Universal prokaryotic gene — present in all bacteria; highly conserved but with variable regions. The standard gene for bacterial phylogenetics and environmental DNA studies.</li>
+              <li><strong>Cytochrome c (protein):</strong> Used in early molecular phylogenetics — its amino acid sequence similarity reflects relatedness.</li>
+              <li><strong>Mitochondrial DNA (mtDNA):</strong> Maternally inherited, no recombination, high mutation rate — valuable for population genetics and recent evolutionary history.</li>
+              <li><strong>Whole-genome sequencing:</strong> Most powerful — compares thousands of genes simultaneously.</li>
+            </ul>
+            <div class="info-box important"><strong>Key Revelation</strong>Molecular data confirmed Woese's three-domain system: Archaea are more closely related to Eukarya than to Bacteria, despite appearing superficially similar to bacteria (both are prokaryotes).</div>
+            <div class="info-box note"><strong>Horizontal Gene Transfer (HGT)</strong>Genes can move between non-parent-offspring organisms (especially in prokaryotes), creating a "web of life" rather than a strict tree. HGT complicates reconstruction of prokaryotic phylogeny.</div>
+          `, terms:[
+            {t:"Molecular clock",d:"The approximately constant rate of neutral DNA mutations used to estimate divergence times between lineages."},
+            {t:"Horizontal gene transfer",d:"Movement of genetic material between organisms other than parent-to-offspring; common in prokaryotes via plasmids, transformation, and transduction."},
+            {t:"Bioinformatics",d:"Application of computational tools to analyze biological data, especially genomic and protein sequences."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-6', num:'5.6',
+        title:"Domains of the Living World",
+        brief:"The three domains represent the deepest divisions in the tree of life, reflecting the fundamental differences in cell organization, membrane chemistry, and evolutionary history.",
+        sections:[
+          { heading:"Domain Comparison", icon:"🌐", content:`
+            <table class="compare-table">
+              <tr><th>Feature</th><th>Bacteria</th><th>Archaea</th><th>Eukarya</th></tr>
+              <tr><td>Nucleus</td><td>Absent</td><td>Absent</td><td>Present</td></tr>
+              <tr><td>Membrane lipids</td><td>Ester-linked fatty acids</td><td>Ether-linked isoprenoids</td><td>Ester-linked fatty acids</td></tr>
+              <tr><td>Cell wall</td><td>Peptidoglycan</td><td>Pseudopeptidoglycan or none</td><td>Varies (cellulose, chitin, or absent)</td></tr>
+              <tr><td>Ribosomes</td><td>70S</td><td>70S (but closer to eukaryotic)</td><td>80S (cytoplasmic)</td></tr>
+              <tr><td>Evolutionary sister to</td><td>—</td><td>Eukarya</td><td>Archaea</td></tr>
+              <tr><td>Habitat</td><td>Ubiquitous</td><td>Often extreme environments</td><td>All habitats</td></tr>
+            </table>
+          `, terms:[
+            {t:"Prokaryote",d:"Cell lacking a membrane-bound nucleus and membrane-bound organelles; includes Bacteria and Archaea."},
+            {t:"Eukaryote",d:"Cell with a membrane-bound nucleus and membrane-bound organelles; includes all organisms in Domain Eukarya."},
+            {t:"Extremophiles",d:"Organisms (mostly Archaea) that thrive in extreme conditions: high temperature (thermophiles), high salinity (halophiles), acidic environments (acidophiles), or methane-rich environments (methanogens)."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-7', num:'5.7',
+        title:"The World of Microbes and Fungi",
+        brief:"Microorganisms are the most abundant and metabolically diverse life forms on Earth — invisible yet essential to all biogeochemical cycles and ecosystem function.",
+        sections:[
+          { heading:"Bacteria", icon:"🦠", content:`
+            <ul class="fact-list" style="--bullet-color:#6b3fa0">
+              <li>Most numerous organisms on Earth (~10³⁰ cells). Reproduce by binary fission.</li>
+              <li>Metabolic diversity unmatched: photoautotrophs (cyanobacteria), chemoautotrophs, heterotrophs, nitrogen fixers (<em>Rhizobium</em>), decomposers.</li>
+              <li>Roles: soil fertility (N-fixation), decomposition, human gut microbiome, food production (yogurt, cheese), biotechnology (insulin, vaccines).</li>
+              <li>Pathogens: TB (<em>Mycobacterium</em>), cholera, plague, Lyme disease — countered by antibiotics (but resistance is a growing threat).</li>
+            </ul>
+          `, terms:[
+            {t:"Binary fission",d:"Asexual reproduction in prokaryotes: the cell replicates its DNA, grows, and divides into two identical daughter cells."},
+            {t:"Nitrogen fixation",d:"Conversion of atmospheric N₂ to ammonia (NH₃) by bacteria (e.g., Rhizobium, Azotobacter) — makes nitrogen available to plants."},
+          ]},
+          { heading:"Viruses", icon:"🔴", content:`
+            <p>Viruses are <span class="hl">acellular, non-living infectious agents</span> consisting of nucleic acid (DNA or RNA) enclosed in a protein coat (capsid), sometimes with a lipid envelope. They cannot replicate independently — they require a host cell's machinery.</p>
+            <p>Replication cycles: <span class="hl">Lytic cycle</span> (immediate replication and host cell lysis) vs. <span class="hl">Lysogenic cycle</span> (viral DNA integrates into host chromosome as a prophage, replicating with the host until triggered).</p>
+          `, terms:[
+            {t:"Capsid",d:"The protein coat surrounding the nucleic acid of a virus."},
+            {t:"Bacteriophage",d:"A virus that infects bacteria."},
+            {t:"Retrovirus",d:"RNA virus that reverse-transcribes its RNA into DNA, which inserts into the host genome (e.g., HIV)."},
+          ]},
+          { heading:"Protists and Fungi", icon:"🍄", content:`
+            <p><span class="hl">Protists</span> are mostly unicellular eukaryotes — an informal group that doesn't fit into plant, animal, or fungi kingdoms. They include: algae (photosynthetic), protozoa (heterotrophic: amoebas, paramecia, trypanosomes), and slime molds.</p>
+            <p><span class="hl">Fungi</span> are heterotrophic eukaryotes with cell walls of chitin. They secrete digestive enzymes externally (extracellular digestion) and absorb the products — saprotrophic nutrition. Major groups: Zygomycetes, Ascomycetes (yeasts, morels), Basidiomycetes (mushrooms, rusts). Fungi form: <strong>mycorrhizae</strong> (mutualism with plant roots), <strong>lichens</strong> (symbiosis with algae/cyanobacteria), and cause diseases (athlete's foot, ringworm, yeast infections).</p>
+          `, terms:[
+            {t:"Mycelium",d:"The mass of branching hyphae forming the vegetative body of a fungus — the main absorptive structure."},
+            {t:"Mycorrhizae",d:"Mutualistic symbiosis between fungi and plant roots: fungi enhance nutrient/water uptake; plant provides sugars."},
+            {t:"Lichen",d:"Symbiosis between a fungus and a photosynthetic partner (algae or cyanobacteria); colonizes bare rock."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-8', num:'5.8',
+        title:"The World of Plants",
+        brief:"From bryophytes clinging to moist surfaces to towering angiosperm trees dominating every landscape, the plant kingdom encompasses ~300,000 species of photosynthetic, mostly terrestrial organisms.",
+        sections:[
+          { heading:"Plant Diversity Overview", icon:"🌳", content:`
+            <table class="compare-table">
+              <tr><th>Group</th><th>Vascular?</th><th>Seeds?</th><th>Flowers?</th><th>Examples</th></tr>
+              <tr><td>Bryophytes</td><td>No</td><td>No</td><td>No</td><td>Mosses, liverworts, hornworts</td></tr>
+              <tr><td>Seedless vascular</td><td>Yes</td><td>No</td><td>No</td><td>Ferns, horsetails, club mosses</td></tr>
+              <tr><td>Gymnosperms</td><td>Yes</td><td>Yes (naked)</td><td>No</td><td>Pines, spruce, cycads, ginkgo</td></tr>
+              <tr><td>Angiosperms</td><td>Yes</td><td>Yes (enclosed)</td><td>Yes</td><td>Grasses, oaks, roses, orchids (~90% of all plants)</td></tr>
+            </table>
+            <div class="info-box note"><strong>Key Adaptations to Land</strong>Vascular tissue (xylem/phloem), cuticle (waxy waterproofing), stomata (gas exchange with guard cells), seeds (protect embryo from desiccation), pollen (allow fertilization without water).</div>
+          `, terms:[
+            {t:"Xylem",d:"Vascular tissue transporting water and dissolved minerals from roots upward through the plant."},
+            {t:"Phloem",d:"Vascular tissue transporting sugars produced by photosynthesis from leaves to other plant tissues."},
+            {t:"Angiosperm",d:"Flowering plant with seeds enclosed within a fruit; the most diverse and dominant group of land plants."},
+            {t:"Gymnosperm",d:"A plant with naked seeds (not enclosed in fruit); includes conifers, cycads, and ginkgo."},
+          ]},
+        ]
+      },
+      {
+        id:'l5-9', num:'5.9',
+        title:"The World of Animals",
+        brief:"Animals are multicellular, heterotrophic eukaryotes that typically reproduce sexually, lack cell walls, and develop from embryos — with ~1.5 million described species across 35+ phyla.",
+        sections:[
+          { heading:"Major Animal Phyla", icon:"🦁", content:`
+            <table class="compare-table">
+              <tr><th>Phylum</th><th>Key Features</th><th>Examples</th></tr>
+              <tr><td>Porifera</td><td>No tissues, no symmetry, filter feeders</td><td>Sponges</td></tr>
+              <tr><td>Cnidaria</td><td>Radial symmetry, cnidocytes (stinging cells), two-layer body</td><td>Jellyfish, corals, hydra</td></tr>
+              <tr><td>Platyhelminthes</td><td>Flatworms; bilateral symmetry; acoelomate</td><td>Tapeworms, planarians, flukes</td></tr>
+              <tr><td>Annelida</td><td>Segmented worms; coelom; closed circulatory system</td><td>Earthworms, leeches, polychaetes</td></tr>
+              <tr><td>Mollusca</td><td>Soft body; mantle; radula; often shelled</td><td>Clams, snails, octopus, squid</td></tr>
+              <tr><td>Arthropoda</td><td>Largest phylum; jointed legs, exoskeleton, segmented body</td><td>Insects, spiders, crabs, shrimp</td></tr>
+              <tr><td>Echinodermata</td><td>Pentaradial symmetry; water vascular system; deuterostome</td><td>Sea stars, sea urchins, sea cucumbers</td></tr>
+              <tr><td>Chordata</td><td>Notochord, dorsal hollow nerve cord, pharyngeal slits, post-anal tail</td><td>Fish, amphibians, reptiles, birds, mammals</td></tr>
+            </table>
+          `, terms:[
+            {t:"Notochord",d:"A flexible rod-like skeletal structure present in all chordate embryos; replaced by the vertebral column in adult vertebrates."},
+            {t:"Coelom",d:"A body cavity derived from mesoderm, surrounding the internal organs; found in annelids, mollusks, echinoderms, and chordates."},
+            {t:"Deuterostome",d:"Animals where the blastopore becomes the anus; includes echinoderms and chordates. Contrasts with protostomes (mouth forms first)."},
+          ]},
+          { heading:"Vertebrate Groups", icon:"🐟", content:`
+            <table class="compare-table">
+              <tr><th>Class</th><th>Key Features</th><th>Examples</th></tr>
+              <tr><td>Chondrichthyes</td><td>Cartilaginous skeleton; no swim bladder</td><td>Sharks, rays</td></tr>
+              <tr><td>Osteichthyes</td><td>Bony skeleton; swim bladder; operculum</td><td>Salmon, tuna, clownfish</td></tr>
+              <tr><td>Amphibia</td><td>Moist skin; aquatic larvae; terrestrial adults; external fertilization</td><td>Frogs, salamanders, caecilians</td></tr>
+              <tr><td>Reptilia</td><td>Scales; amniotic egg; ectothermic (most)</td><td>Snakes, lizards, turtles, crocodilians + birds</td></tr>
+              <tr><td>Aves (Birds)</td><td>Feathers; endothermic; hollow bones; highly efficient respiratory system</td><td>Eagles, penguins, ostriches</td></tr>
+              <tr><td>Mammalia</td><td>Hair/fur; mammary glands; endothermic; mostly viviparous; diaphragm</td><td>Humans, whales, bats, platypus</td></tr>
+            </table>
+          `, terms:[
+            {t:"Endotherm",d:"Organism that generates body heat metabolically to maintain a stable internal temperature (birds and mammals)."},
+            {t:"Ectotherm",d:"Organism that relies on external heat sources to regulate body temperature (fish, amphibians, most reptiles)."},
+            {t:"Mammary glands",d:"Defining feature of mammals — modified sweat glands that secrete milk to nourish offspring."},
+          ]},
+        ]
+      },
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD UI
+// ═══════════════════════════════════════════════════════════════
+let currentUnit = 0;
+
+function buildAll() {
+  buildNav();
+  buildProgressDots();
+  buildContent();
+}
+
+function buildProgressDots() {
+  const wrap = document.getElementById('pdots');
+  wrap.innerHTML = UNITS.map((u, i) =>
+    `<div class="pdot" id="pdot-${i}" title="${u.title.replace(/&amp;/g,'&')}" style="background:${i===0?u.color:'rgba(255,255,255,.2)'}" onclick="jumpToUnit(${i})"></div>`
+  ).join('');
+}
+
+function jumpToUnit(idx) {
+  document.getElementById(`unit-${UNITS[idx].id}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function buildNav() {
+  const sb = document.getElementById('sb-inner');
+  let html = '';
+  UNITS.forEach((u, ui) => {
+    html += `<div class="sb-section-label">${u.id.toUpperCase()} — ${u.num}</div>`;
+    html += `<div class="sb-unit" id="sbu-${u.id}" style="--active-color:${u.color};--active-bg:${u.light}" onclick="jumpToUnit(${ui})">
+      <div class="sb-unit-label">Unit ${u.num}</div>
+      <div class="sb-unit-title">${u.title}</div>
+    </div>`;
+    u.lessons.forEach(l => {
+      html += `<div class="sb-sub" id="sbl-${l.id}" style="--active-color:${u.color};--active-bg:${u.light}" onclick="jumpToLesson('${l.id}')">${l.num} ${l.title}</div>`;
+    });
+  });
+  sb.innerHTML = html;
+}
+
+function jumpToLesson(lessonId) {
+  document.getElementById(`lesson-${lessonId}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function buildContent() {
+  const main = document.getElementById('main');
+  let html = '';
+  UNITS.forEach((u, ui) => {
+    html += `<div id="unit-${u.id}" class="unit-section">`;
+    // Hero
+    html += `<div class="unit-hero" data-num="${u.num}" style="background:${u.light};border-left:6px solid ${u.color}">
+      <div class="unit-badge" style="color:${u.color};border-color:${u.mid};background:rgba(255,255,255,.7)">Unit ${u.num}</div>
+      <h1 style="color:${u.color.replace(/[^#\w]/g,'') ? u.color : '#1a1209'}">${u.title}</h1>
+      <p class="subtitle">${u.subtitle}</p>
+    </div>`;
+    // Lessons
+    u.lessons.forEach((l, li) => {
+      html += buildLesson(l, u, li===0);
+    });
+    html += `</div>`;
+  });
+  main.innerHTML = html;
+}
+
+function buildLesson(l, u, startOpen) {
+  let html = `<div class="lesson-section" id="lesson-${l.id}">`;
+  html += `<div class="lesson-header${startOpen?' open':''}" onclick="toggleLesson(this)">
+    <div class="lesson-num" style="background:${u.color}">${l.num}</div>
+    <div class="lesson-title-wrap">
+      <h2>${l.title}</h2>
+      <p>${l.brief}</p>
+    </div>
+    <div class="toggle-icon">▶</div>
+  </div>`;
+
+  html += `<div class="lesson-body${startOpen?' open':''}">`;
+  html += `<div class="lesson-summary">${l.brief}</div>`;
+
+  l.sections.forEach(sec => {
+    html += `<div class="content-block">`;
+    html += `<h3><span class="icon">${sec.icon}</span>${sec.heading}</h3>`;
+    html += sec.content;
+    if (sec.terms && sec.terms.length > 0) {
+      html += `<div style="margin-top:12px"><div style="font-size:.75rem;font-family:'DM Mono',monospace;color:#9c8570;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Key Terms</div>`;
+      html += `<div class="key-terms">`;
+      sec.terms.forEach(term => {
+        html += `<div class="term">${term.t}<div class="def">${term.d}</div></div>`;
+      });
+      html += `</div></div>`;
+    }
+    html += `</div>`;
+    html += `<hr class="rule-divider">`;
+  });
+
+  html += `</div></div>`;
+  return html;
+}
+
+function toggleLesson(header) {
+  const isOpen = header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open', isOpen);
+}
+
+// ── SEARCH ──
+function doSearch(q) {
+  const query = q.trim().toLowerCase();
+  if (!query) {
+    document.querySelectorAll('.lesson-section').forEach(s => s.style.display = '');
+    document.querySelectorAll('.unit-section').forEach(s => s.style.display = '');
+    return;
+  }
+  document.querySelectorAll('.unit-section').forEach(unit => {
+    let unitVisible = false;
+    unit.querySelectorAll('.lesson-section').forEach(lesson => {
+      const text = lesson.textContent.toLowerCase();
+      const match = text.includes(query);
+      lesson.style.display = match ? '' : 'none';
+      if (match) {
+        unitVisible = true;
+        // open the lesson body
+        const header = lesson.querySelector('.lesson-header');
+        const body = lesson.querySelector('.lesson-body');
+        if (header && body) { header.classList.add('open'); body.classList.add('open'); }
+      }
+    });
+    unit.style.display = unitVisible ? '' : 'none';
+  });
+}
+
+// ── SCROLL SPY ──
+const observerOptions = { root:null, threshold:0.15 };
+function setupScrollSpy() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      // Unit hero
+      if (id.startsWith('unit-')) {
+        const uid = id.replace('unit-','');
+        const ui = UNITS.findIndex(u=>u.id===uid);
+        document.querySelectorAll('.sb-unit').forEach(b=>b.classList.remove('active'));
+        document.getElementById(`sbu-${uid}`)?.classList.add('active');
+        document.querySelectorAll('.pdot').forEach((d,i)=>{
+          d.style.background = i===ui ? UNITS[i].color : 'rgba(255,255,255,.2)';
+        });
+      }
+      // Lesson
+      if (id.startsWith('lesson-')) {
+        const lid = id.replace('lesson-','');
+        document.querySelectorAll('.sb-sub').forEach(b=>b.classList.remove('active'));
+        document.getElementById(`sbl-${lid}`)?.classList.add('active');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.unit-section, .lesson-section').forEach(el => obs.observe(el));
+}
+
+buildAll();
+setupScrollSpy();
+</script>
+</body>
+</html>
